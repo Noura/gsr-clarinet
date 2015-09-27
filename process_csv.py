@@ -2,7 +2,7 @@
 import csv
 import json
 
-infile = 'test2.csv'
+infile = 'gsr.csv'
 outfile = 'data.json' 
 
 data = []
