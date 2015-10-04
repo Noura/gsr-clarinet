@@ -1,4 +1,14 @@
 window.onload = function() {
+    var templates = make_underscore_templates($('body'));
+    var app = soundvis({
+        templates: templates,
+        $container: $('#soundvis'), 
+        data_url: 'data.json', 
+        sound_url: 'clarinet.mp3'
+    });
+    app.run();
+};
+/*
     //
     // SETUP //////////////////
     //
@@ -77,6 +87,7 @@ window.onload = function() {
                 // THEN GET THINGS MOVING //////////////////
                 //
                 source.buffer = buf;
+                source.playbackRate.value = 5.0;
 
                 // hooking up the audio stuff
                 source.connect(filter);
@@ -93,4 +104,4 @@ window.onload = function() {
         };
         request.send(); // end of loading song
     }); // end of loading GSR data
-}; // end of window.onload
+*/
