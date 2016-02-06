@@ -8,12 +8,12 @@ var load_json_samples = function(json_url, format) {
             return (val - min) / (max - min);
         });
         return {
-            json: d,
-            dt: dt,
-            values: values,
-            min: min,
-            max: max,
-            normalized: normalized,
+           json: d,
+           dt: dt,
+           values: values,
+           min: min,
+           max: max,
+           normalized: normalized,
         };
     });
 };
@@ -34,32 +34,21 @@ var load_audio_buffer = function(audioContext, audio_url) {
     return promise;
 };
 
-var soundvis = function(options) {
+var data_and_audio_doer = function(options) {
     var that = {};
     var audioCtx = new AudioContext();
     var source = audioCtx.createBufferSource();
     var gsr = null;
-    var templates = options.templates;
-    var $el = options.$container;
 
     load_json_samples(options.data_url, {time: 'seconds', value: 'gsr'}).then(function(o) {
         gsr = o;
+        console.log('gsr', o);
     });
 
     load_audio_buffer(audioCtx, options.sound_url).then(function(b) {
         source.buffer = b;
+        console.log('buffer', b);
     });
 
-    $el.html(templates.loading());
-
-    that.run = function() {
-        if (gsr === null || source.buffer === null) {
-            console.log('soundvis: loading...');
-            setTimeout(that.run, 500);
-            return;
-        }
-        console.log('soundvis: run');
-        $el.html('');
-    };
-    return that;
 };
+
