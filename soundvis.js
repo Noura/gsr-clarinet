@@ -36,19 +36,39 @@ var load_audio_buffer = function(audioContext, audio_url) {
 
 var data_and_audio_doer = function(options) {
     var that = {};
-    var audioCtx = new AudioContext();
-    var source = audioCtx.createBufferSource();
-    var gsr = null;
+    that.audioCtx = new AudioContext();
+    that.audio_source = that.audioCtx.createBufferSource();
+    that.gsr = null;
 
     load_json_samples(options.data_url, {time: 'seconds', value: 'gsr'}).then(function(o) {
-        gsr = o;
+        that.gsr = o;
         console.log('gsr', o);
     });
 
-    load_audio_buffer(audioCtx, options.sound_url).then(function(b) {
-        source.buffer = b;
+    load_audio_buffer(that.audioCtx, options.sound_url).then(function(b) {
+        that.audio_source.buffer = b;
         console.log('buffer', b);
     });
 
+    return that; 
 };
 
+var barstack = function(selector, data) {
+    var viz = d3.select(selector);
+    var bars = viz.selectAll('div').data(data).enter().append('div');
+
+    function update(data) {
+        bars.data(data)
+            .style("width", "100%")
+            .style("height", function(d) { 
+                return d.h + "px"; })
+            .style("background", function(d, i) { 
+                var gray = (i % 2) ? 10 : 100;
+                return "rgb(" + gray + "," + gray + "," + gray +")"; });
+    }
+    update(data);
+
+    return {
+        update: update,
+    }
+};
